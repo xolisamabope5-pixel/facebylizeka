@@ -28,7 +28,8 @@
             padding: 10px 20px;
             text-decoration: none;
             display: inline-block;
-            margin-top: 10px;
+            margin: 5px;
+            border-radius: 5px;
         }
 
         section {
@@ -49,6 +50,32 @@
             padding: 10px 20px;
             cursor: pointer;
         }
+
+        /* SERVICES */
+        .services {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .card {
+            width: 250px;
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #333;
+        }
+
+        .card img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .price {
+            color: #d4af37;
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -58,15 +85,40 @@
     <h1>FaceByLizeka Beauty Studio</h1>
     <p>Luxury makeup for weddings, events & photoshoots</p>
 
+    <a class="btn" href="#services">Services</a>
     <a class="btn" href="#book">Book Now</a>
     <a class="btn" href="/track">Track Booking</a>
     <a class="btn" href="/login">Admin</a>
 </header>
 
+<!-- SERVICES SECTION -->
+<section id="services">
+    <h2 style="color:#d4af37;">Our Services</h2>
+
+    <div class="services">
+
+        {% for s in services %}
+        <div class="card">
+
+            {% if s.image %}
+                <img src="{{ url_for('static', filename='uploads/' + s.image) }}">
+            {% endif %}
+
+            <h3>{{ s.name }}</h3>
+            <p class="price">R{{ s.price }}</p>
+
+        </div>
+        {% endfor %}
+
+    </div>
+</section>
+
+<!-- BOOKING -->
 <section id="book">
-    <h2>Book Appointment</h2>
+    <h2 style="color:#d4af37;">Book Appointment</h2>
 
     <form method="POST" action="/book">
+
         <input name="name" placeholder="Your Name" required><br>
         <input name="phone" placeholder="Phone Number" required><br>
 

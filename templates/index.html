@@ -1,215 +1,185 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Mobile Beauty Therapist</title>
+    <meta charset="UTF-8">
+    <title>FaceByLizeka Beauty Studio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: #fff8f6;
-        }
-
-        /* HEADER */
-        .header {
-            background: linear-gradient(135deg, #ff6fa3, #ff9a8b);
+            background: #0f0f0f;
             color: white;
+        }
+
+        header {
             text-align: center;
-            padding: 40px 20px;
+            padding: 70px 20px;
+            background: linear-gradient(135deg, #111, #1a1a1a);
         }
 
-        .header h1 {
-            margin: 0;
-            font-size: 32px;
+        h1 {
+            font-size: 42px;
+            letter-spacing: 1px;
+            color: #d4af37; /* GOLD */
         }
 
-        .header p {
-            margin-top: 10px;
-            font-size: 16px;
+        p {
+            font-size: 18px;
+            max-width: 650px;
+            margin: 20px auto;
+            color: #ddd;
+            line-height: 1.6;
         }
 
-        /* NAV */
-        .nav {
-            text-align: center;
-            padding: 10px;
-            background: white;
-        }
-
-        .nav a {
-            margin: 0 10px;
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 28px;
+            background: #d4af37; /* GOLD */
+            color: black;
             text-decoration: none;
-            color: #ff4d88;
             font-weight: bold;
+            border-radius: 6px;
+            transition: 0.3s;
         }
 
-        /* SERVICES */
-        .container {
+        .btn:hover {
+            background: #b8942f;
+        }
+
+        section {
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #d4af37;
+            margin-bottom: 30px;
+        }
+
+        .services {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            padding: 20px;
+            gap: 20px;
         }
 
         .card {
-            background: white;
             width: 260px;
-            margin: 10px;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        .card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
+            padding: 20px;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
         }
 
         .card h3 {
-            margin: 10px 0 5px 0;
+            color: #d4af37;
         }
 
-        .price {
-            color: #ff4d88;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        /* BOOKING FORM */
-        .booking {
-            background: white;
+        form {
             max-width: 500px;
-            margin: 30px auto;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin: auto;
+            text-align: left;
         }
 
-        .booking h2 {
-            text-align: center;
-        }
-
-        .booking input,
-        .booking textarea {
+        input, textarea, select {
             width: 100%;
             padding: 10px;
             margin: 8px 0;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            border: none;
+            border-radius: 5px;
         }
 
-        .booking button {
+        input, textarea, select {
+            background: #222;
+            color: white;
+        }
+
+        button {
             width: 100%;
             padding: 12px;
-            background: #ff4d88;
-            color: white;
+            background: #d4af37;
             border: none;
-            border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
         }
 
-        .booking button:hover {
-            background: #e63e76;
+        button:hover {
+            background: #b8942f;
         }
 
-        /* FOOTER */
-        .footer {
+        footer {
             text-align: center;
             padding: 20px;
+            color: #888;
             font-size: 14px;
-            color: #777;
         }
-
-        /* 📱 MOBILE RESPONSIVE */
-        @media screen and (max-width: 768px) {
-
-            .container {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .card {
-                width: 90%;
-            }
-
-            .header h1 {
-                font-size: 24px;
-            }
-
-            .booking {
-                width: 90%;
-                margin: 20px auto;
-            }
-
-            .nav a {
-                display: inline-block;
-                margin: 8px;
-            }
-        }
-
     </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
-<div class="header">
-    <h1>💖 Mobile Beauty Therapist</h1>
-    <p>We bring beauty to your home — Nails • Hair • Makeup • Care</p>
-</div>
+<header>
+    <h1>FaceByLizeka Beauty Studio</h1>
 
-<!-- NAVIGATION -->
-<div class="nav">
-    <a href="/">Home</a>
-    <a href="/track">Track Booking</a>
-    <a href="/login">Admin</a>
-</div>
+    <p>
+        Luxury makeup artistry for weddings, glam events, photoshoots, and special occasions.
+        We create flawless, long-lasting looks that enhance your natural beauty.
+    </p>
 
-<!-- SERVICES -->
-<div class="container">
+    <a href="#booking" class="btn">Book Your Glam Session</a>
+</header>
 
-    {% for service in services %}
-    <div class="card">
+<section>
+    <h2>Our Signature Services</h2>
 
-        {% if service.image %}
-            <img src="{{ url_for('static', filename='uploads/' + service.image) }}">
-        {% endif %}
+    <div class="services">
 
-        <h3>{{ service.name }}</h3>
-        <div class="price">R{{ service.price }}</div>
+        <div class="card">
+            <h3>Bridal Glam</h3>
+            <p>Elegant, long-lasting wedding makeup for your special day.</p>
+        </div>
+
+        <div class="card">
+            <h3>Event Makeup</h3>
+            <p>Stand out with professional glam for parties and events.</p>
+        </div>
+
+        <div class="card">
+            <h3>Photoshoot Look</h3>
+            <p>Camera-ready makeup for branding and professional shoots.</p>
+        </div>
 
     </div>
-    {% endfor %}
+</section>
 
-</div>
-
-<!-- BOOKING FORM -->
-<div class="booking">
-    <h2>📅 Book an Appointment</h2>
+<section id="booking">
+    <h2>Book Your Appointment</h2>
 
     <form method="POST" action="/book">
 
         <input type="text" name="name" placeholder="Your Name" required>
-
         <input type="text" name="phone" placeholder="Phone Number" required>
 
-        <input type="text" name="service" placeholder="Service Needed" required>
+        <select name="service">
+            <option value="Bridal Glam">Bridal Glam</option>
+            <option value="Event Makeup">Event Makeup</option>
+            <option value="Photoshoot Look">Photoshoot Look</option>
+        </select>
 
         <input type="date" name="date" required>
 
-        <textarea name="message" placeholder="Extra details (optional)"></textarea>
+        <textarea name="message" placeholder="Any special requests..."></textarea>
 
         <button type="submit">Submit Booking</button>
-
     </form>
-</div>
+</section>
 
-<!-- FOOTER -->
-<div class="footer">
-    © 2026 Mobile Beauty Therapist | Professional at-home beauty care
-</div>
+<footer>
+    © 2026 FaceByLizeka Beauty Studio. All rights reserved.
+</footer>
 
 </body>
 </html>

@@ -1,26 +1,79 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin Dashboard</title>
+    <title>FaceByLizeka Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
-<body style="background:#0f0f0f; color:white; text-align:center;">
+<body style="background:#0f0f0f; color:white; font-family:Arial; text-align:center;">
 
-<h1 style="color:#d4af37;">Admin Dashboard</h1>
+<h1 style="color:#d4af37;">FaceByLizeka Admin Panel</h1>
 
 <a href="/logout" style="color:red;">Logout</a>
 
-<h2>Bookings</h2>
+<hr>
+
+<!-- ================= BOOKINGS ================= -->
+<h2 style="color:#d4af37;">Bookings</h2>
 
 {% for b in bookings %}
-<div style="border:1px solid #444; margin:10px; padding:10px;">
-    <p><b>{{ b.name }}</b> | {{ b.phone }}</p>
-    <p>{{ b.service }} - {{ b.date }}</p>
-    <p>Status: <b>{{ b.status }}</b></p>
+<div style="border:1px solid #444; margin:10px auto; padding:10px; max-width:500px;">
+    <p><b>Name:</b> {{ b.name }}</p>
+    <p><b>Phone:</b> {{ b.phone }}</p>
+    <p><b>Service:</b> {{ b.service }}</p>
+    <p><b>Date:</b> {{ b.date }}</p>
+    <p><b>Status:</b> {{ b.status }}</p>
 
     <a href="/approve/{{ b.id }}" style="color:green;">Approve</a>
     |
     <a href="/reject/{{ b.id }}" style="color:red;">Reject</a>
+</div>
+{% endfor %}
+
+<hr>
+
+<!-- ================= ADD SERVICE ================= -->
+<h2 style="color:#d4af37;">Add New Service</h2>
+
+<form method="POST" action="/add_service" enctype="multipart/form-data"
+      style="max-width:400px; margin:auto;">
+
+    <input name="name" placeholder="Service Name"
+           style="width:100%; padding:10px; margin:5px;"><br>
+
+    <input name="price" placeholder="Price (e.g. 500)"
+           style="width:100%; padding:10px; margin:5px;"><br>
+
+    <input type="file" name="image"
+           style="width:100%; margin:5px;"><br>
+
+    <button type="submit"
+            style="background:#d4af37; padding:10px; width:100%; border:none;">
+        Add Service
+    </button>
+</form>
+
+<hr>
+
+<!-- ================= SERVICES LIST ================= -->
+<h2 style="color:#d4af37;">Services</h2>
+
+{% for s in services %}
+<div style="border:1px solid #444; margin:10px auto; padding:10px; max-width:500px;">
+
+    <p><b>{{ s.name }}</b> - R{{ s.price }}</p>
+
+    {% if s.image %}
+        <img src="{{ url_for('static', filename='uploads/' + s.image) }}"
+             width="120">
+    {% endif %}
+
+    <br><br>
+
+    <a href="/edit_service/{{ s.id }}" style="color:orange;">Edit</a>
+    |
+    <a href="/delete_service/{{ s.id }}" style="color:red;">Delete</a>
+
 </div>
 {% endfor %}
 

@@ -1,53 +1,48 @@
-import os
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug.utils import secure_filename
-from collections import defaultdict
+import os
 
 app = Flask(__name__)
-app.secret_key = "beauty-secret"
+app.secret_key = "facebylizeka_secret"
 
-# ---------------- UPLOAD FOLDER ----------------
-UPLOAD_FOLDER = os.path.join("static", "uploads")
-app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-# ---------------- DATABASE ----------------
+# DATABASE
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///beauty.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+# UPLOADS (optional future use)
+app.config["UPLOAD_FOLDER"] = "static/uploads"
+
 db = SQLAlchemy(app)
 
-# ---------------- MODELS ----------------
+# ---------------- MODELS ---------------- #
 
 class Service(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120))
-    price = db.Column(db.String(50))
+    name = db.Column(db.String(100))
+    price = db.Column(db.Float)
     image = db.Column(db.String(200))
 
 class Booking(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120))
+    name = db.Column(db.String(100))
     phone = db.Column(db.String(50))
-    service = db.Column(db.String(120))
+    service = db.Column(db.String(100))
     date = db.Column(db.String(50))
     message = db.Column(db.Text)
     status = db.Column(db.String(20), default="Pending")
 
-with app.app_context():
-    db.create_all()
+# ---------------- HOME ---------------- #
 
-# ---------------- HOME ----------------
 @app.route("/")
 def home():
     services = Service.query.all()
     return render_template("index.html", services=services)
 
-# ---------------- BOOK ----------------
+# ---------------- BOOKING ---------------- #
+
 @app.route("/book", methods=["POST"])
 def book():
-    new_booking = Booking(
+    booking = Booking(
         name=request.form["name"],
         phone=request.form["phone"],
         service=request.form["service"],
@@ -55,24 +50,24 @@ def book():
         message=request.form["message"],
         status="Pending"
     )
-
-    db.session.add(new_booking)
+    db.session.add(booking)
     db.session.commit()
+    return redirect(url_for("home"))
 
-    return "Booking received successfully!"
+# ---------------- TRACK BOOKING ---------------- #
 
-# ---------------- TRACK ----------------
 @app.route("/track", methods=["GET", "POST"])
 def track():
-    bookings = []
+    result = None
 
     if request.method == "POST":
         phone = request.form["phone"]
-        bookings = Booking.query.filter_by(phone=phone).all()
+        result = Booking.query.filter_by(phone=phone).all()
 
-    return render_template("track.html", bookings=bookings)
+    return render_template("track.html", bookings=result)
 
-# ---------------- LOGIN (UPDATED) ----------------
+# ---------------- ADMIN LOGIN ---------------- #
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -80,107 +75,53 @@ def login():
         password = request.form["password"]
 
         if username == "facebylizeka" and password == "24689":
-            session["user"] = True
-            return redirect("/admin")
-
-        return "Invalid username or password"
+            session["admin"] = True
+            return redirect(url_for("admin"))
+        return "Invalid login"
 
     return render_template("login.html")
 
-# ---------------- LOGOUT ----------------
+# ---------------- ADMIN DASHBOARD ---------------- #
+
+@app.route("/admin")
+def admin():
+    if not session.get("admin"):
+        return redirect(url_for("login"))
+
+    bookings = Booking.query.all()
+    services = Service.query.all()
+
+    return render_template("admin.html", bookings=bookings, services=services)
+
+# ---------------- APPROVE BOOKING ---------------- #
+
+@app.route("/approve/<int:id>")
+def approve(id):
+    booking = Booking.query.get(id)
+    booking.status = "Approved"
+    db.session.commit()
+    return redirect(url_for("admin"))
+
+# ---------------- REJECT BOOKING ---------------- #
+
+@app.route("/reject/<int:id>")
+def reject(id):
+    booking = Booking.query.get(id)
+    booking.status = "Rejected"
+    db.session.commit()
+    return redirect(url_for("admin"))
+
+# ---------------- LOGOUT ---------------- #
+
 @app.route("/logout")
 def logout():
     session.clear()
-    return redirect("/login")
+    return redirect(url_for("login"))
 
-# ---------------- ADMIN ----------------
-@app.route("/admin", methods=["GET", "POST"])
-def admin():
-    if not session.get("user"):
-        return redirect("/login")
+# ---------------- INIT DB ---------------- #
 
-    if request.method == "POST":
-        name = request.form["name"]
-        price = request.form["price"]
-
-        file = request.files["image"]
-        filename = None
-
-        if file and file.filename != "":
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-
-        service = Service(name=name, price=price, image=filename)
-        db.session.add(service)
-        db.session.commit()
-
-        return redirect("/admin")
-
-    services = Service.query.all()
-    return render_template("admin.html", services=services)
-
-# ---------------- DELETE SERVICE ----------------
-@app.route("/delete/<int:id>")
-def delete(id):
-    if not session.get("user"):
-        return redirect("/login")
-
-    service = Service.query.get(id)
-    if service:
-        db.session.delete(service)
-        db.session.commit()
-
-    return redirect("/admin")
-
-# ---------------- APPROVE ----------------
-@app.route("/approve/<int:id>")
-def approve(id):
-    if not session.get("user"):
-        return redirect("/login")
-
-    booking = Booking.query.get(id)
-    if booking:
-        booking.status = "Approved"
-        db.session.commit()
-
-    return redirect("/bookings")
-
-# ---------------- REJECT ----------------
-@app.route("/reject/<int:id>")
-def reject(id):
-    if not session.get("user"):
-        return redirect("/login")
-
-    booking = Booking.query.get(id)
-    if booking:
-        booking.status = "Rejected"
-        db.session.commit()
-
-    return redirect("/bookings")
-
-# ---------------- BOOKINGS ----------------
-@app.route("/bookings")
-def bookings():
-    if not session.get("user"):
-        return redirect("/login")
-
-    all_bookings = Booking.query.all()
-    return render_template("bookings.html", bookings=all_bookings)
-
-# ---------------- CALENDAR ----------------
-@app.route("/calendar")
-def calendar():
-    if not session.get("user"):
-        return redirect("/login")
-
-    bookings = Booking.query.all()
-
-    grouped = defaultdict(list)
-    for b in bookings:
-        grouped[b.date].append(b)
-
-    return render_template("calendar.html", grouped=grouped)
-
-# ---------------- RUN (LOCAL ONLY) ----------------
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
+
     app.run()

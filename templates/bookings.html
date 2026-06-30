@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bookings</title>
+</head>
+<body>
+
+<h1>📅 Bookings Management</h1>
+
+<a href="/admin">Back to Admin</a>
+
+<hr>
+
+{% for b in bookings %}
+    <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+
+        <p><b>Name:</b> {{ b.name }}</p>
+        <p><b>Phone:</b> {{ b.phone }}</p>
+        <p><b>Service:</b> {{ b.service }}</p>
+        <p><b>Date:</b> {{ b.date }}</p>
+        <p><b>Message:</b> {{ b.message }}</p>
+
+        <p>
+            <b>Status:</b>
+            {% if b.status == "Pending" %}
+                🟡 Pending
+            {% elif b.status == "Approved" %}
+                🟢 Approved
+            {% else %}
+                🔴 Rejected
+            {% endif %}
+        </p>
+
+        <a href="/approve/{{ b.id }}">Approve</a>
+        |
+        <a href="/reject/{{ b.id }}" style="color:red;">Reject</a>
+
+    </div>
+{% endfor %}
+
+</body>
+</html>

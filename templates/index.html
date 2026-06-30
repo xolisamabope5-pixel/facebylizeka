@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mobile Beauty Therapist</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #fff8f6;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, #ff6fa3, #ff9a8b);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        .header p {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        /* NAV */
+        .nav {
+            text-align: center;
+            padding: 10px;
+            background: white;
+        }
+
+        .nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #ff4d88;
+            font-weight: bold;
+        }
+
+        /* SERVICES */
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            width: 260px;
+            margin: 10px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card h3 {
+            margin: 10px 0 5px 0;
+        }
+
+        .price {
+            color: #ff4d88;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        /* BOOKING FORM */
+        .booking {
+            background: white;
+            max-width: 500px;
+            margin: 30px auto;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .booking h2 {
+            text-align: center;
+        }
+
+        .booking input,
+        .booking textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .booking button {
+            width: 100%;
+            padding: 12px;
+            background: #ff4d88;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .booking button:hover {
+            background: #e63e76;
+        }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            color: #777;
+        }
+
+        /* 📱 MOBILE RESPONSIVE */
+        @media screen and (max-width: 768px) {
+
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .card {
+                width: 90%;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .booking {
+                width: 90%;
+                margin: 20px auto;
+            }
+
+            .nav a {
+                display: inline-block;
+                margin: 8px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <h1>💖 Mobile Beauty Therapist</h1>
+    <p>We bring beauty to your home — Nails • Hair • Makeup • Care</p>
+</div>
+
+<!-- NAVIGATION -->
+<div class="nav">
+    <a href="/">Home</a>
+    <a href="/track">Track Booking</a>
+    <a href="/login">Admin</a>
+</div>
+
+<!-- SERVICES -->
+<div class="container">
+
+    {% for service in services %}
+    <div class="card">
+
+        {% if service.image %}
+            <img src="{{ url_for('static', filename='uploads/' + service.image) }}">
+        {% endif %}
+
+        <h3>{{ service.name }}</h3>
+        <div class="price">R{{ service.price }}</div>
+
+    </div>
+    {% endfor %}
+
+</div>
+
+<!-- BOOKING FORM -->
+<div class="booking">
+    <h2>📅 Book an Appointment</h2>
+
+    <form method="POST" action="/book">
+
+        <input type="text" name="name" placeholder="Your Name" required>
+
+        <input type="text" name="phone" placeholder="Phone Number" required>
+
+        <input type="text" name="service" placeholder="Service Needed" required>
+
+        <input type="date" name="date" required>
+
+        <textarea name="message" placeholder="Extra details (optional)"></textarea>
+
+        <button type="submit">Submit Booking</button>
+
+    </form>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+    © 2026 Mobile Beauty Therapist | Professional at-home beauty care
+</div>
+
+</body>
+</html>

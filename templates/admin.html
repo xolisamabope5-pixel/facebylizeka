@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel</title>
+</head>
+<body>
+
+<h1>🛠 Admin Panel</h1>
+
+<a href="/logout">Logout</a>
+
+<hr>
+
+<h2>➕ Add Service</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    <input type="text" name="name" placeholder="Service Name" required>
+    <input type="text" name="price" placeholder="Price" required>
+    <input type="file" name="image">
+    <button type="submit">Add</button>
+</form>
+
+<hr>
+
+<h2>📋 Services</h2>
+
+{% for service in services %}
+    <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+
+        <h3>{{ service.name }}</h3>
+        <p>R{{ service.price }}</p>
+
+        {% if service.image %}
+            <img src="{{ url_for('static', filename='uploads/' + service.image) }}" width="120">
+        {% endif %}
+
+        <br><br>
+
+        <a href="/edit/{{ service.id }}">Edit</a>
+        |
+        <a href="/delete/{{ service.id }}" style="color:red;">Delete</a>
+
+    </div>
+{% endfor %}
+
+</body>
+</html>

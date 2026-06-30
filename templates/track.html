@@ -2,77 +2,27 @@
 <html>
 <head>
     <title>Track Booking</title>
-
-    <style>
-        body {
-            font-family: Arial;
-            background: #fff8f6;
-            text-align: center;
-        }
-
-        .box {
-            max-width: 500px;
-            margin: 40px auto;
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        input {
-            width: 90%;
-            padding: 10px;
-            margin: 10px 0;
-        }
-
-        button {
-            padding: 10px 20px;
-            background: #ff4d88;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        .card {
-            margin-top: 15px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-        }
-    </style>
 </head>
 
-<body>
+<body style="background:#111; color:white; text-align:center;">
 
-<div class="box">
+<h2 style="color:#d4af37;">Track Your Booking</h2>
 
-    <h2>📍 Track Your Booking</h2>
+<form method="POST">
+    <input name="phone" placeholder="Enter your phone">
+    <button>Track</button>
+</form>
 
-    <form method="POST">
-        <input type="text" name="phone" placeholder="Enter your phone number" required>
-        <button type="submit">Track</button>
-    </form>
+{% if bookings %}
+    <h3>Results:</h3>
 
     {% for b in bookings %}
-        <div class="card">
-
-            <p><b>Service:</b> {{ b.service }}</p>
-            <p><b>Date:</b> {{ b.date }}</p>
-
-            <p><b>Status:</b>
-                {% if b.status == "Pending" %}
-                    🟡 Pending
-                {% elif b.status == "Approved" %}
-                    🟢 Approved
-                {% else %}
-                    🔴 Rejected
-                {% endif %}
-            </p>
-
-        </div>
+    <div style="border:1px solid #444; margin:10px; padding:10px;">
+        <p>{{ b.service }} on {{ b.date }}</p>
+        <p>Status: <b>{{ b.status }}</b></p>
+    </div>
     {% endfor %}
-
-</div>
+{% endif %}
 
 </body>
 </html>

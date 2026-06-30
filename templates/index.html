@@ -1,120 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>FaceByLizeka Beauty Studio</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: Arial;
             background: #0f0f0f;
             color: white;
         }
 
         header {
             text-align: center;
-            padding: 70px 20px;
-            background: linear-gradient(135deg, #111, #1a1a1a);
+            padding: 60px 20px;
+            background: #111;
         }
 
         h1 {
-            font-size: 42px;
-            letter-spacing: 1px;
-            color: #d4af37; /* GOLD */
-        }
-
-        p {
-            font-size: 18px;
-            max-width: 650px;
-            margin: 20px auto;
-            color: #ddd;
-            line-height: 1.6;
+            color: #d4af37;
         }
 
         .btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 28px;
-            background: #d4af37; /* GOLD */
+            background: #d4af37;
             color: black;
+            padding: 10px 20px;
             text-decoration: none;
-            font-weight: bold;
-            border-radius: 6px;
-            transition: 0.3s;
-        }
-
-        .btn:hover {
-            background: #b8942f;
+            display: inline-block;
+            margin-top: 10px;
         }
 
         section {
-            padding: 60px 20px;
+            padding: 40px;
             text-align: center;
         }
 
-        h2 {
-            color: #d4af37;
-            margin-bottom: 30px;
-        }
-
-        .services {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .card {
-            width: 260px;
-            padding: 20px;
-            background: #1a1a1a;
-            border: 1px solid #2a2a2a;
-            border-radius: 10px;
-        }
-
-        .card h3 {
-            color: #d4af37;
-        }
-
-        form {
-            max-width: 500px;
-            margin: auto;
-            text-align: left;
-        }
-
-        input, textarea, select {
-            width: 100%;
+        input, select, textarea {
+            width: 90%;
+            max-width: 400px;
             padding: 10px;
-            margin: 8px 0;
-            border: none;
-            border-radius: 5px;
-        }
-
-        input, textarea, select {
-            background: #222;
-            color: white;
+            margin: 8px;
         }
 
         button {
-            width: 100%;
-            padding: 12px;
             background: #d4af37;
             border: none;
-            font-weight: bold;
+            padding: 10px 20px;
             cursor: pointer;
-        }
-
-        button:hover {
-            background: #b8942f;
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: #888;
-            font-size: 14px;
         }
     </style>
 </head>
@@ -123,63 +56,32 @@
 
 <header>
     <h1>FaceByLizeka Beauty Studio</h1>
+    <p>Luxury makeup for weddings, events & photoshoots</p>
 
-    <p>
-        Luxury makeup artistry for weddings, glam events, photoshoots, and special occasions.
-        We create flawless, long-lasting looks that enhance your natural beauty.
-    </p>
-
-    <a href="#booking" class="btn">Book Your Glam Session</a>
+    <a class="btn" href="#book">Book Now</a>
+    <a class="btn" href="/track">Track Booking</a>
+    <a class="btn" href="/login">Admin</a>
 </header>
 
-<section>
-    <h2>Our Signature Services</h2>
-
-    <div class="services">
-
-        <div class="card">
-            <h3>Bridal Glam</h3>
-            <p>Elegant, long-lasting wedding makeup for your special day.</p>
-        </div>
-
-        <div class="card">
-            <h3>Event Makeup</h3>
-            <p>Stand out with professional glam for parties and events.</p>
-        </div>
-
-        <div class="card">
-            <h3>Photoshoot Look</h3>
-            <p>Camera-ready makeup for branding and professional shoots.</p>
-        </div>
-
-    </div>
-</section>
-
-<section id="booking">
-    <h2>Book Your Appointment</h2>
+<section id="book">
+    <h2>Book Appointment</h2>
 
     <form method="POST" action="/book">
-
-        <input type="text" name="name" placeholder="Your Name" required>
-        <input type="text" name="phone" placeholder="Phone Number" required>
+        <input name="name" placeholder="Your Name" required><br>
+        <input name="phone" placeholder="Phone Number" required><br>
 
         <select name="service">
-            <option value="Bridal Glam">Bridal Glam</option>
-            <option value="Event Makeup">Event Makeup</option>
-            <option value="Photoshoot Look">Photoshoot Look</option>
-        </select>
+            <option>Bridal Glam</option>
+            <option>Event Makeup</option>
+            <option>Photoshoot Look</option>
+        </select><br>
 
-        <input type="date" name="date" required>
-
-        <textarea name="message" placeholder="Any special requests..."></textarea>
+        <input type="date" name="date" required><br>
+        <textarea name="message" placeholder="Message"></textarea><br>
 
         <button type="submit">Submit Booking</button>
     </form>
 </section>
-
-<footer>
-    © 2026 FaceByLizeka Beauty Studio. All rights reserved.
-</footer>
 
 </body>
 </html>
